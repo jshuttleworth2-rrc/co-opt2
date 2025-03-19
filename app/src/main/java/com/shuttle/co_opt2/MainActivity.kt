@@ -26,8 +26,6 @@ import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import androidx.compose.foundation.layout.Arrangement
 
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +100,7 @@ fun ReorderList() {
                                 onClick = {},
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_snowflake_foreground),
+                                    painter = painterResource(id = R.drawable.drag_lines),
                                     contentDescription = "Snowflake"
                                 )
                             }
