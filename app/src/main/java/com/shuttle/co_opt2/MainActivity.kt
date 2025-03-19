@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.shuttle.co_opt2.ui.theme.Co_opt2Theme
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import androidx.compose.foundation.layout.Arrangement
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +35,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             Co_opt2Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CustomList()
                     ReorderList()
                 }
             }
@@ -59,42 +61,52 @@ fun CustomList() {
     }
 }
 
+/*
+ * https://github.com/Calvin-LL/Reorderable
+ */
 @Composable
 fun ReorderList() {
     val itemList = remember { mutableStateListOf(*List(25) { "Item $it"}.toTypedArray()) }
-    val lazyListState = rememberLazyListState()
+    val lazyListState = rememberLazyListState() // Remembers the state
 
     val reorderableState = rememberReorderableLazyListState(lazyListState = lazyListState) { from, to ->
-            itemList.add(to.index, itemList.removeAt(from.index))
+            itemList.add(to.index, itemList.removeAt(from.index)) // Tracks changes and updates the states from index to index
     }
 
     LazyColumn(
-        state = lazyListState,
+        state = lazyListState, // Assigns the state defined
         modifier = Modifier
             .fillMaxSize()
     ) {
-        items(itemList, key = { it }) { item ->
-            ReorderableItem(reorderableState, key = item) { isDragging ->
+        items(itemList, key = { it }) { item -> // Lists the items
+            ReorderableItem(reorderableState, key = item) { isDragging -> // Wraps the items to allow for dragging and reordering
                 Row {
                     Card(
                         modifier = Modifier
+                            .fillMaxSize()
                             .padding(8.dp)
                             .let { if (isDragging) it else it }
                     ) {
-                        Text(
-                            text = item,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
+                        Row (
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = item,
+                                modifier = Modifier.padding(16.dp)
+                            )
 
-                    IconButton(
-                        modifier = Modifier.draggableHandle(),
-                        onClick = {},
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_snowflake_foreground),
-                            contentDescription = "Snowflake"
-                        )
+                            IconButton(
+                                // The icon that allows users to actually drag and reorder the lists
+                                modifier = Modifier.draggableHandle(),
+                                onClick = {},
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_snowflake_foreground),
+                                    contentDescription = "Snowflake"
+                                )
+                            }
+                        }
                     }
                 }
             }
