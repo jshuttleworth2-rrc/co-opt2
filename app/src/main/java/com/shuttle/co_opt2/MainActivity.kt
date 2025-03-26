@@ -101,7 +101,7 @@ fun ReorderList() {
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.drag_lines),
-                                    contentDescription = "Snowflake"
+                                    contentDescription = "Drag Lines"
                                 )
                             }
                         }
